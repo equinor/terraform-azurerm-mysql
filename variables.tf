@@ -23,22 +23,18 @@ variable "administrator_login" {
   type        = string
 }
 
-variable "administrator_password" {
-  description = "The login password of the administrator for this MySQL server."
-  type        = string
-}
-
 variable "databases" {
   description = "A list of databases to create on the MySQL Flexible Server."
-  type = list(object({
+  type = map(object({
     name      = string
-    collation = string
-    charset   = string
+    collation = optional(string, "utf8_general_ci")
+    charset   = optional(string, "utf8")
   }))
 }
 
 variable "server_version" {
   description = "The version of this MySQL server"
+  default     = "5.7"
 }
 
 variable "tags" {
@@ -53,18 +49,18 @@ variable "sku_name" {
   default     = "B_Standard_B1ms"
 }
 
-variable "size_gb" {
+variable "storage_size_gb" {
   description = "Sets size for this MySQL database."
   type        = number
   default     = 20
 
   validation {
-    condition     = var.size_gb >= 20 && var.size_gb <= 16384
+    condition     = var.storage_size_gb >= 20 && var.storage_size_gb <= 16384
     error_message = "Possible values are between 20 and 16384"
   }
 }
 
-variable "auto_grow_enabled" {
+variable "storage_auto_grow_enabled" {
   description = "Should Storage Auto Grow be enabled?"
   type        = bool
   default     = true
@@ -89,21 +85,17 @@ variable "zone" {
 
 variable "firewall_rules" {
   description = "A list of firewall rules to apply to the MySQL Flexible Server."
-  type = list(object({
+  type = map(object({
     name             = string
     start_ip_address = string
     end_ip_address   = string
   }))
 
-  default = []
-}
-
-variable "server_configurations" {
-  description = "A list of server configurations to apply to the MySQL Flexible Server."
-  type = list(object({
-    name  = string
-    value = string
-  }))
-
-  default = []
+  default = {
+    "azure" = {
+      name             = "AllowAllWindowsAzureIps"
+      start_ip_address = "0.0.0.0"
+      end_ip_address   = "0.0.0.0"
+    }
+  }
 }
