@@ -3,7 +3,7 @@ output "server_id" {
   value       = azurerm_mysql_flexible_server.this.id
 }
 
-output "server_configuration_name" {
+output "server_name" {
   description = "The name of this MySQL server."
   value       = azurerm_mysql_flexible_server.this.name
 }
