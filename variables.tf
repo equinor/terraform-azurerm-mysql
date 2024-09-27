@@ -57,6 +57,11 @@ variable "server_version" {
   description = "The version of this MySQL server"
   type        = string
   default     = "8.0.21"
+
+  validation {
+    condition = var.server_version == "8.0.21" || var.server_version == "5.7"
+    error_message = "Possible values are \"5.7\", and \"8.0.21\""
+  }
 }
 
 variable "tags" {
