@@ -6,6 +6,10 @@
 
 Terraform module which creates Azure Database for MySQL resources.
 
+## Features
+
+- Audit logs sent to given Log Analytics workspace by default.
+
 ## Notes
 
 ### MySQL Client Password Limitation
