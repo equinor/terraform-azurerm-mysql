@@ -13,9 +13,10 @@ Terraform module which creates Azure Database for MySQL resources.
 The MySQL client has a limitation that prohibits entering a password longer than 79 characters. To work around this limitation, use either a configuration file or environment variables to connect.
 
 #### Using a Configuration File
+
 Create a .my.cnf file with the following content:
 
-```
+```ini
 [client]
 user="<username>"
 password="<password>"
@@ -24,25 +25,30 @@ port="<port>"
 ```
 
 Set the appropriate permissions:
-```
+
+```bash
 chmod 600 .my.cnf
 ```
 
 Then connect using:
-```
+
+```bash
 mysql --defaults-file=.my.cnf
 ```
 
 #### Using Environment Variables
+
 Set the environment variables:
-```
+
+```bash
 export MYSQL_PWD='<password>'
 export MYSQL_HOST="<domain name or IP>"
 export MYSQL_PORT="<port>"
 ```
 
 Then connect using:
-```
+
+```bash
 mysql -u <username>
 ```
 
