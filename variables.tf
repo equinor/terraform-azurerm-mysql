@@ -116,13 +116,13 @@ variable "geo_redundant_backup_enabled" {
 }
 
 variable "zone" {
-  description = "Specifies the availability zone in which this MySQL server should be located."
+  description = "Specifies the availability zone in which this MySQL server should be located. Value must be 1, 2 or 3."
   type        = number
   default     = null
   nullable    = true
 
   validation {
-    condition     = contains([1, 2, 3, null], var.zone)
+    condition     = contains([1, 2, 3], coalesce(var.zone, 1))
     error_message = "The zone must be 1, 2, or 3."
   }
 }
