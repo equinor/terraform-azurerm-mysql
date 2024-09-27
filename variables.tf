@@ -21,6 +21,7 @@ variable "log_analytics_workspace_id" {
 variable "administrator_login" {
   description = "The login username of the administrator for this MySQL server."
   type        = string
+  default     = "mysqladmin"
 }
 
 variable "databases" {
@@ -30,11 +31,32 @@ variable "databases" {
     collation = optional(string, "utf8_general_ci")
     charset   = optional(string, "utf8")
   }))
+
+  default = {}
+}
+
+variable "diagnostic_setting_name" {
+  description = "The name of this diagnostic setting."
+  type        = string
+  default     = "audit-logs"
+}
+
+variable "diagnostic_setting_enabled_log_categories" {
+  description = "A list of log categories to be enabled for this diagnostic setting."
+  type        = list(string)
+  default     = ["MySqlAuditLogs"]
+}
+
+variable "diagnostic_setting_enabled_metric_categories" {
+  description = "A list of metric categories to be enabled for this diagnostic setting."
+  type        = list(string)
+  default     = []
 }
 
 variable "server_version" {
   description = "The version of this MySQL server"
-  default     = "5.7"
+  type        = string
+  default     = "8.0.21"
 }
 
 variable "tags" {

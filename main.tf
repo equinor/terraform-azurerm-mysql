@@ -1,3 +1,7 @@
+locals {
+  diagnostic_setting_metric_categories = ["AllMetrics"]
+}
+
 resource "random_password" "this" {
   length      = 128
   lower       = true
@@ -56,4 +60,27 @@ resource "azurerm_mysql_flexible_server_firewall_rule" "this" {
   name             = each.value.name
   start_ip_address = each.value.start_ip_address
   end_ip_address   = each.value.end_ip_address
+}
+
+resource "azurerm_monitor_diagnostic_setting" "this" {
+  name                       = var.diagnostic_setting_name
+  target_resource_id         = azurerm_mysql_flexible_server.this.id
+  log_analytics_workspace_id = var.log_analytics_workspace_id
+
+  dynamic "enabled_log" {
+    for_each = toset(var.diagnostic_setting_enabled_log_categories)
+
+    content {
+      category = enabled_log.value
+    }
+  }
+  dynamic "metric" {
+    for_each = toset(concat(local.diagnostic_setting_metric_categories, var.diagnostic_setting_enabled_metric_categories))
+
+    content {
+      # Azure expects explicit configuration of both enabled and disabled metric categories.
+      category = metric.value
+      enabled  = contains(var.diagnostic_setting_enabled_metric_categories, metric.value)
+    }
+  }
 }

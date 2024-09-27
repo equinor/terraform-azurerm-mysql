@@ -1,4 +1,5 @@
 provider "azurerm" {
+  skip_provider_registration = true
   features {}
 }
 
@@ -20,18 +21,8 @@ module "mysql" {
   # version = "v0.1.0"
   source = "../.."
 
-  server_name                  = "mysql-${random_id.this.hex}"
-  server_version               = "5.7"
-  resource_group_name          = var.resource_group_name
-  location                     = var.location
-  administrator_login          = "mysqladmin"
-  storage_auto_grow_enabled    = false
-  geo_redundant_backup_enabled = false
-  log_analytics_workspace_id   = module.log_analytics.workspace_id
-
-  databases = {
-    "foo" = {
-      name = "foo"
-    }
-  }
+  server_name                = "mysql-${random_id.this.hex}"
+  resource_group_name        = var.resource_group_name
+  location                   = var.location
+  log_analytics_workspace_id = module.log_analytics.workspace_id
 }
