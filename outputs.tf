@@ -23,13 +23,16 @@ output "administrator_password" {
   value       = azurerm_mysql_flexible_server.this.administrator_password
 }
 
-output "databases" {
-  description = "A map of MySQL databases."
+output "database_names" {
+  description = "A map of database names."
   value = {
-    for database in azurerm_mysql_flexible_database.this :
-    database.name => {
-      name = database.name
-      id   = database.id
-    }
+    for k, v in azurerm_mysql_flexible_database.this : k => v.name
+  }
+}
+
+output "database_ids" {
+  description = "A map of database IDs."
+  value = {
+    for k, v in azurerm_mysql_flexible_database.this : k => v.id
   }
 }
