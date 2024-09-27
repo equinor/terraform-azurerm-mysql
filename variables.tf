@@ -115,18 +115,6 @@ variable "geo_redundant_backup_enabled" {
   nullable    = true
 }
 
-variable "zone" {
-  description = "Specifies the availability zone in which this MySQL server should be located."
-  type        = number
-  default     = null
-  nullable    = true
-
-  validation {
-    condition     = contains([1, 2, 3, null], var.zone)
-    error_message = "The zone must be 1, 2, or 3."
-  }
-}
-
 variable "firewall_rules" {
   description = "A list of firewall rules to apply to the MySQL server."
 
