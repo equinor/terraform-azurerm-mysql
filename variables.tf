@@ -59,7 +59,7 @@ variable "server_version" {
   default     = "8.0.21"
 
   validation {
-    condition = var.server_version == "8.0.21" || var.server_version == "5.7"
+    condition     = var.server_version == "8.0.21" || var.server_version == "5.7"
     error_message = "Possible values are \"5.7\", and \"8.0.21\""
   }
 }
