@@ -43,6 +43,20 @@ resource "azurerm_mysql_flexible_server" "this" {
   }
 }
 
+# Ideally, we would create a resource "azurerm_mysql_flexible_server_active_directory_administrator" to enforce
+# configuration of a Microsoft Entra administrator.
+#
+# However, this resource has a required property "identity_id" which requires the resource ID of a user-assigned managed
+# identity with the following permissions in Microsoft Entra:
+# - User.Read.All
+# - GroupMember.Read.All
+# - Application.Read.All
+#
+# We can't expect users of this module to have access to a user-assigned managed identity with these privileges in
+# Microsoft Entra by default. As a result, we choose not to include that resource in this module.
+#
+# Ref: https://learn.microsoft.com/en-us/azure/mysql/flexible-server/how-to-azure-ad
+
 resource "azurerm_mysql_flexible_database" "this" {
   for_each = var.databases
 
@@ -63,6 +77,13 @@ resource "azurerm_mysql_flexible_server_firewall_rule" "this" {
   name             = each.value.name
   start_ip_address = each.value.start_ip_address
   end_ip_address   = each.value.end_ip_address
+}
+
+resource "azurerm_mysql_flexible_server_configuration" "aad_auth_only" {
+  server_name         = azurerm_mysql_flexible_server.this.name
+  resource_group_name = azurerm_mysql_flexible_server.this.resource_group_name
+  name                = "aad_auth_only"
+  value               = "ON"
 }
 
 resource "azurerm_monitor_diagnostic_setting" "this" {
