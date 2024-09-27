@@ -79,13 +79,6 @@ resource "azurerm_mysql_flexible_server_firewall_rule" "this" {
   end_ip_address   = each.value.end_ip_address
 }
 
-resource "azurerm_mysql_flexible_server_configuration" "aad_auth_only" {
-  server_name         = azurerm_mysql_flexible_server.this.name
-  resource_group_name = azurerm_mysql_flexible_server.this.resource_group_name
-  name                = "aad_auth_only"
-  value               = "ON"
-}
-
 resource "azurerm_monitor_diagnostic_setting" "this" {
   name                       = var.diagnostic_setting_name
   target_resource_id         = azurerm_mysql_flexible_server.this.id
