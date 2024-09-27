@@ -144,5 +144,5 @@ variable "firewall_rules" {
     }
   }
 
-  nullable = true
+  nullable = false
 }
