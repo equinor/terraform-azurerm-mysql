@@ -23,21 +23,24 @@ resource "azurerm_mysql_flexible_server" "this" {
   administrator_password       = random_password.this.result
   sku_name                     = var.sku_name
   geo_redundant_backup_enabled = var.geo_redundant_backup_enabled
-  zone                         = var.zone
+  zone                         = null # Automatically managed by Azure.
 
   storage {
     auto_grow_enabled = var.storage_auto_grow_enabled
     size_gb           = var.storage_size_gb
   }
 
+  tags = var.tags
+
   lifecycle {
     ignore_changes = [
       # Allow admin password to be updated outside of Terraform.
-      administrator_password
+      administrator_password,
+
+      # Allow availability zone to be automatically managed by Azure.
+      zone
     ]
   }
-
-  tags = var.tags
 }
 
 resource "azurerm_mysql_flexible_database" "this" {
