@@ -1,17 +1,57 @@
-# Terraform Module Template
+# Azure Database for MySQL Terraform module
 
-[![SCM Compliance](https://scm-compliance-api.radix.equinor.com/repos/equinor/terraform-module-template/badge)](https://scm-compliance-api.radix.equinor.com/repos/equinor/terraform-module-template/badge)
+[![SCM Compliance](https://scm-compliance-api.radix.equinor.com/repos/equinor/terraform-azurerm-mysql/badge)](https://scm-compliance-api.radix.equinor.com/repos/equinor/terraform-azurerm-mysql/badge)
 [![Equinor Terraform Baseline](https://img.shields.io/badge/Equinor%20Terraform%20Baseline-1.0.0-blueviolet)](https://github.com/equinor/terraform-baseline)
 [![Conventional Commits](https://img.shields.io/badge/Conventional%20Commits-1.0.0-yellow.svg)](https://conventionalcommits.org)
 
-Template repository for Terraform modules.
+Terraform module which creates Azure Database for MySQL resources.
+
+## Notes
+
+### MySQL Client Password Limitation
+
+The MySQL client has a limitation that prohibits entering a password longer than 79 characters. To work around this limitation, use either a configuration file or environment variables to connect.
+
+#### Using a Configuration File
+Create a .my.cnf file with the following content:
+
+```
+[client]
+user="<username>"
+password="<password>"
+host="<domain name or IP>"
+port="<port>"
+```
+
+Set the appropriate permissions:
+```
+chmod 600 .my.cnf
+```
+
+Then connect using:
+```
+mysql --defaults-file=.my.cnf
+```
+
+#### Using Environment Variables
+Set the environment variables:
+```
+export MYSQL_PWD='<password>'
+export MYSQL_HOST="<domain name or IP>"
+export MYSQL_PORT="<port>"
+```
+
+Then connect using:
+```
+mysql -u <username>
+```
 
 ## Development
 
 1. Clone this repository:
 
     ```console
-    git clone https://github.com/equinor/terraform-azurerm-foobar.git
+    git clone https://github.com/equinor/terraform-azurerm-mysql.git
     ```
 
 1. Login to Azure:
